@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -28,17 +27,12 @@ func main() {
 }
 
 func buildGit() (fastlane.Git, error) {
-	token := os.Getenv("GITLAB_ACCESS_TOKEN")
-	if token == "" {
-		return nil, errors.New("gitlab token cannot be empty")
-	}
-
 	var opts []gitlabsdk.ClientOptionFunc
 	if u := os.Getenv("GITLAB_BASE_URL"); u != "" {
 		opts = append(opts, gitlabsdk.WithBaseURL(u))
 	}
 
-	c, err := gitlabsdk.NewClient(token, opts...)
+	c, err := gitlabsdk.NewClient(os.Getenv("GITLAB_ACCESS_TOKEN"), opts...)
 	if err != nil {
 		return nil, fmt.Errorf("cannot build gitlab SDK client")
 	}
