@@ -1,7 +1,6 @@
 package httpapi
 
 import (
-	"context"
 	"net/http"
 
 	"github.com/hmoragrega/fastlane"
@@ -9,12 +8,11 @@ import (
 )
 
 type lister interface {
-	ListOpenReviews(ctx context.Context) ([]fastlane.Review, error)
+	OpenReviews() []fastlane.Review
 }
 
 func ListOpenReviews(svc lister) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		mrs, err := svc.ListOpenReviews(r.Context())
-		encode(w, mrs, err)
+		encodeData(w, svc.OpenReviews())
 	}
 }
