@@ -1,0 +1,21 @@
+builds:
+  - env:
+      - CGO_ENABLED=0
+      - TREESCALE_TOKEN={{secrets.
+    targets:
+      - linux_amd64
+      - darwin_amd64
+      - linux_arm_7
+    main: ./cmd/server
+
+archives:
+  - replacements:
+      darwin: Darwin
+      linux: Linux
+      windows: Windows
+      386: i386
+      amd64: x86_64
+
+dockers:
+  - image_templates:
+      - repo.treescale.com/hmoragrega/fastlane

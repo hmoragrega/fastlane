@@ -21,7 +21,14 @@ jobs:
         name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.17
+          go-version: 1.1
+      -
+        name: Docker Login
+        uses: docker/login-action@v1
+        with:
+          registry: repo.treescale.com
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.TREESCALE_TOKEN }}
       -
         name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2
@@ -31,3 +38,4 @@ jobs:
           args: release --rm-dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TREESCALE_TOKEN: ${{ secrets.TREESCALE_TOKEN }}
