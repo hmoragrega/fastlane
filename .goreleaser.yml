@@ -26,7 +26,7 @@ dockers:
     use: buildx
     goarch: arm
     goarm: 7
-    dockerfile: Dockerfile
+    dockerfile: docker/armv7/Dockerfile
     build_flag_templates:
       - "--platform=linux/arm/v7"
 docker_manifests:
