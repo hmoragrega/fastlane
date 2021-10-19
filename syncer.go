@@ -78,6 +78,15 @@ func (s *Syncer) KeepUpdated(ctx context.Context, frequency time.Duration) error
 	t.Reset(0)
 	defer t.Stop()
 
+	s.mergedReviews = append(s.mergedReviews, ReviewMerged{
+		Review: Review{
+			ID:             "294",
+			ProjectID:      "196",
+			MergeCommitSHA: "9f71617a5ef1ec187be34024938c8e0911dcfe55",
+			Title:          "Fastlane test  n.003",
+		},
+	})
+
 	for {
 		select {
 		case <-ctx.Done():

@@ -7,6 +7,8 @@ builds:
       - darwin_amd64
       - linux_arm_7
     main: ./cmd/server
+    flags:
+      - --debug
 
 archives:
   - replacements:
