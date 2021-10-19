@@ -39,5 +39,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKER_CLI_EXPERIMENTAL: enabled
-      - run: ls -l dist/fastlane_linux_amd64
-      - run: ls -l dist/fastlane_linux_arm_7
+      #-
+      #  name: Set env
+      #  run: echo ::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:10})
+      #-
+      #  name: Build ARM image
+      #  run: |
+      #    cp dist/fastlane_linux_arm_7 ./fastlane \
+      #    docker buildx build . --load -t hmoragrega/fastlane:${{ env.RELEASE_VERSION }}-linux-arm-v7 --platform=linux/arm/v7 \
+      #    docker push hmoragrega/fastlane:0.0.1-rc14-linux-arm-v7 \
+      #    docker ls -l dist/fastlane_linux_amd64
+      #    ls -l dist/fastlane_linux_arm_7
+
