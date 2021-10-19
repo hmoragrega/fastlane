@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM arm32v7/alpine:3.11 as build
+FROM golang:alpine3.14 as build
 
 RUN apk update && apk --no-cache add ca-certificates
 

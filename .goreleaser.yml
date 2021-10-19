@@ -1,7 +1,6 @@
 builds:
   - env:
       - CGO_ENABLED=0
-      - TREESCALE_TOKEN={{secrets.
     targets:
       - linux_amd64
       - darwin_amd64
@@ -14,23 +13,23 @@ archives:
       linux: Linux
       amd64: x86_64
 
-dockers:
+#dockers:
 #  - image_templates:
 #      - "hmoragrega/fastlane:{{ .Version }}-linux-amd64"
 #    use: buildx
 #    dockerfile: Dockerfile
 #    build_flag_templates:
 #      - "--platform=linux/amd64"
-  - image_templates:
-      - "hmoragrega/fastlane:{{ .Version }}-linux-arm-v7"
-    use: buildx
-    goarch: arm
-    goarm: 7
-    dockerfile: docker/armv7/Dockerfile
-    build_flag_templates:
-      - "--platform=linux/arm/v7"
-docker_manifests:
-  - name_template: hmoragrega/fastlane:{{ .Version }}
-    image_templates:
-      - hmoragrega/fastlane:{{ .Version }}-amd64
-      - hmoragrega/fastlane:{{ .Version }}-arm-v7
+#  - image_templates:
+#      - "hmoragrega/fastlane:{{ .Version }}-linux-arm-v7"
+#    use: buildx
+#    goarch: arm
+#    goarm: 7
+#    dockerfile: docker/armv7/Dockerfile
+#    build_flag_templates:
+#      - "--platform=linux/arm/v7"
+#docker_manifests:
+#  - name_template: hmoragrega/fastlane:{{ .Version }}
+#    image_templates:
+#      - hmoragrega/fastlane:{{ .Version }}-amd64
+#      - hmoragrega/fastlane:{{ .Version }}-arm-v7

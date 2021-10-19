@@ -39,3 +39,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKER_CLI_EXPERIMENTAL: enabled
+      - run: ls -l dist/fastlane_linux_amd64
+      - run: ls -l dist/fastlane_linux_arm_7
