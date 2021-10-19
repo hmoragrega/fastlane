@@ -15,9 +15,6 @@ ipcMain.on('asynchronous-message', (event, arg) => {
 ipcMain.on('synchronous-message', (event, arg) => {
   console.log("sync", arg) // prints "ping"
 
-  console.log("notification icon", path.join(__dirname, 'img/icons/git-24x24.png'))
-  console.log("notification icon", path.join(__static, 'img/icons/git-24x24.png'))
-
   notifier.notify({
     title: arg.title,
     message: arg.message,
@@ -78,8 +75,6 @@ async function createWindow() {
   });
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
-    console.log("LOADING WEB 1 = ", process.env.WEBPACK_DEV_SERVER_URL)
-
     // Load the url of the dev server if in development mode
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
     if (!process.env.IS_TEST) win.webContents.openDevTools();
@@ -94,9 +89,6 @@ const openDevTools = () => {
 }
 
 async function createTray() {
-  console.log("ASSETS!", assetsDirectory)
-  console.log("STATIC!", __static)
-
   tray = new Tray(path.join(__static, 'img/icons/git-16x16.png'))
   tray.on('right-click', openDevTools)
   tray.on('double-click', toggleWindow)

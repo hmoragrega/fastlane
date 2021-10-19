@@ -2,6 +2,7 @@ package fastlane
 
 import (
 	"github.com/google/uuid"
+	"strings"
 )
 
 const (
@@ -78,12 +79,21 @@ func calculateReviewEvents(current, updated []Review) (events []Event) {
 			for username := range approved {
 				removed = append(removed, username)
 			}
-			events = append(events, Event{
-				Name: SystemNotificationEventName,
-				Data: SystemNotification{
-					Title:   r.Title,
-					Message: "Review cannot be merged anymore!",
-				}})
+			if len(removed) > 0 {
+				events = append(events, Event{
+					Name: SystemNotificationEventName,
+					Data: SystemNotification{
+						Title:   r.Title,
+						Message: "Review cannot be merged anymore! @" + strings.Join(removed, ", @") + " removed the approval",
+					}})
+			} else {
+				events = append(events, Event{
+					Name: SystemNotificationEventName,
+					Data: SystemNotification{
+						Title:   r.Title,
+						Message: "Review cannot be merged anymore!",
+					}})
+			}
 		}
 	}
 
