@@ -31,7 +31,7 @@ jobs:
           go_version: ${{ matrix.go_version }}
           dest: build
           prefix: fastlane-server
-          targets: linux/amd64,linux/arm/v7
+          targets: linux/amd64,linux/arm-7
           v: true
           x: true
           ldflags: -s -w
