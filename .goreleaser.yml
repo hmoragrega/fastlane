@@ -15,12 +15,12 @@ archives:
       amd64: x86_64
 
 dockers:
-  - image_templates:
-      - "hmoragrega/fastlane:{{ .Version }}-linux-amd64"
-    use: buildx
-    dockerfile: Dockerfile
-    build_flag_templates:
-      - "--platform=linux/amd64"
+#  - image_templates:
+#      - "hmoragrega/fastlane:{{ .Version }}-linux-amd64"
+#    use: buildx
+#    dockerfile: Dockerfile
+#    build_flag_templates:
+#      - "--platform=linux/amd64"
   - image_templates:
       - "hmoragrega/fastlane:{{ .Version }}-linux-arm-v7"
     use: buildx
