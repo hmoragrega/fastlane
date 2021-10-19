@@ -30,6 +30,10 @@ dockers:
     build_flag_templates:
       - "--platform=linux/arm/v7"
 docker_manifests:
+  - name_template: hmoragrega/fastlane:latest
+    image_templates:
+      - hmoragrega/fastlane:{{ .Version }}-linux-amd64
+      - hmoragrega/fastlane:{{ .Version }}-linux-arm-v7
   - name_template: hmoragrega/fastlane:{{ .Version }}
     image_templates:
       - hmoragrega/fastlane:{{ .Version }}-linux-amd64
