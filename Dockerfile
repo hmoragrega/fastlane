@@ -1,6 +1,6 @@
 FROM golang:alpine as build
 
-RUN apk --no-cache add ca-certificates
+RUN apk update && apk --no-cache add ca-certificates
 
 FROM scratch
 
