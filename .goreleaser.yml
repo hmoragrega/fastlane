@@ -18,4 +18,21 @@ archives:
 
 dockers:
   - image_templates:
-      - repo.treescale.com/hmoragrega/fastlane
+      - "hmoragrega/fastlane:{{ .Version }}-linux-amd64"
+    use: buildx
+    dockerfile: Dockerfile
+    build_flag_templates:
+      - "--platform=linux/amd64"
+  - image_templates:
+      - "hmoragrega/fastlane:{{ .Version }}-linux-arm-v7"
+    use: buildx
+    goarch: arm
+    goarm: 7
+    dockerfile: Dockerfile
+    build_flag_templates:
+      - "--platform=linux/arm/v7"
+docker_manifests:
+  - name_template: hmoragrega/fastlane:{{ .Version }}
+    image_templates:
+      - hmoragrega/fastlane:{{ .Version }}-amd64
+      - hmoragrega/fastlane:{{ .Version }}-arm-v7
