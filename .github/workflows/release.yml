@@ -24,14 +24,16 @@ jobs:
 
       - name: Build with xgo
         uses: crazy-max/ghaction-xgo@v1
+        env:
+          CGO_ENABLED: "0"
         with:
           xgo_version: latest
           go_version: ${{ matrix.go_version }}
           dest: build
-          prefix: autocannon-go
+          prefix: fastlane-server
           targets: linux/amd64,linux/arm/v7
           v: true
-          x: false
+          x: true
           ldflags: -s -w
       - name: Create Release
         uses: actions/create-release@v1.0.0
