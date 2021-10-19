@@ -1,5 +1,13 @@
 <template>
   <v-app>
+    <v-progress-linear
+        :active=!connected
+        dark
+        absolute
+        top
+        indeterminate
+        color="yellow darken-2"
+    ></v-progress-linear>
     <!--v-app-bar app color="primary" dark>
       <div class="d-flex align-center">
         <v-img
@@ -36,14 +44,20 @@
     <v-main>
       <router-view />
     </v-main>
+    <v-overlay :value="!connected"></v-overlay>
   </v-app>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import {mapState} from "vuex";
 
 export default Vue.extend({
   name: "App",
+
+  computed: mapState({
+    connected: state => state.socket.isConnected
+  }),
 
   data: () => ({
     //

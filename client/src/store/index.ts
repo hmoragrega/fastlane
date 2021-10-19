@@ -24,16 +24,13 @@ export default new Vuex.Store({
   modules: {},
   mutations: {
     close_notification(state, id) {
-      console.log("deleting notification with ID", id)
-      console.log("current count", state.notifications.length)
       state.notifications = state.notifications.filter(n => n.id !== id);
-      console.log("count after deletion", state.notifications.length)
     },
     SOCKET_ONOPEN (state, event)  {
       Vue.prototype.$socket = event.currentTarget
       state.socket.isConnected = true
     },
-    SOCKET_ONCLOSE (state, event)  {
+    SOCKET_ONCLOSE (state)  {
       state.socket.isConnected = false
     },
     SOCKET_ONERROR (state, event)  {
@@ -55,7 +52,9 @@ export default new Vuex.Store({
           break;
         case "SYSTEM-NOTIFICATION":
           console.log("received system notification", message.data)
-          window.ipc.send('synchronous-message', message.data);
+          if (window.ipc !== undefined) {
+            window.ipc.send('synchronous-message', message.data);
+          }
           break;
       }
     },

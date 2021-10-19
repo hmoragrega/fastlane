@@ -7,11 +7,12 @@ import vuetify from "./plugins/vuetify";
 import './assets/css/styles.scss';
 import VueNativeSock from "vue-native-websocket";
 
+//Vue.use(VueNativeSock, 'ws://192.168.1.101:3001/v1/ws', {
 Vue.use(VueNativeSock, 'ws://127.0.0.1:3000/v1/ws', {
     store: store,
     format: 'json',
     reconnection: true, // (Boolean) whether to reconnect automatically (false)
-    reconnectionAttempts: 5, // (Number) number of reconnection attempts before giving up (Infinity),
+    //reconnectionAttempts: 5, // (Number) number of reconnection attempts before giving up (Infinity),
     reconnectionDelay: 3000,
 })
 
