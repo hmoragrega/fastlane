@@ -78,15 +78,6 @@ func (s *Syncer) KeepUpdated(ctx context.Context, frequency time.Duration) error
 	t.Reset(0)
 	defer t.Stop()
 
-	// TODO remove, test pipeline
-	s.mergedReviews = append(s.mergedReviews, ReviewMerged{Review: Review{
-		Title:          "Fastlane test n.002",
-		ID:             "293",
-		Description:    "Partners can have whitelisted IPs optionally It accepts both normal IPv4 and v6 or in CIDR notation Next: Part 2 - Be able to Update the IPs as Admin (or even the partner?)",
-		ProjectID:      "196",
-		MergeCommitSHA: "63a7b45552558a30c44d92f2af0abbeb7736902a",
-	}})
-
 	for {
 		select {
 		case <-ctx.Done():

@@ -55,10 +55,9 @@ func calculateReviewEvents(current, updated []Review) (events []Event) {
 		m[r.ID] = r
 	}
 	for _, r := range updated {
-		old, ok := m[r.ID]
-		if !ok {
-			continue
-		}
+		// if not found, old review is zero value
+		old := m[r.ID]
+
 		if r.MergeEnabled() && !old.MergeEnabled() {
 			events = append(events, Event{
 				Name: SystemNotificationEventName,
@@ -67,14 +66,26 @@ func calculateReviewEvents(current, updated []Review) (events []Event) {
 					Message: "Review can be merged! click to merge",
 				}})
 		}
+		if !r.MergeEnabled() && old.MergeEnabled() {
+			approved := make(map[string]struct{})
+			for _, a := range old.Approvals {
+				approved[a.Username] = struct{}{}
+			}
+			for _, a := range r.Approvals {
+				delete(approved, a.Username)
+			}
+			var removed []string
+			for username := range approved {
+				removed = append(removed, username)
+			}
+			events = append(events, Event{
+				Name: SystemNotificationEventName,
+				Data: SystemNotification{
+					Title:   r.Title,
+					Message: "Review cannot be merged anymore!",
+				}})
+		}
 	}
-
-	events = append(events, Event{
-		Name: SystemNotificationEventName,
-		Data: SystemNotification{
-			Title:   "EL TEST",
-			Message: "Review can be merged! click to merge",
-		}})
 
 	return events
 }
