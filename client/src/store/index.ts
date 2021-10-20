@@ -12,6 +12,7 @@ export default new Vuex.Store({
       message: '',
       reconnectError: false,
     },
+    server_address: "",
     reviews: new Array<{id: string}>(),
     merged: [], // list of merged reviews
     notifications: new Array<{id: string}>(),
@@ -19,12 +20,20 @@ export default new Vuex.Store({
   actions: {
     merge: function(context, reviewID) {
       Vue.prototype.$socket.sendObj({name: "MERGE", data: reviewID})
+    },
+    persist_server_address: function (context) {
+      console.log("changing server address in store to ", context.state.server_address)
+      localStorage.setItem("server_address", context.state.server_address)
+      location.reload(); // hacky, but works
     }
   },
   modules: {},
   mutations: {
     close_notification(state, id) {
       state.notifications = state.notifications.filter(n => n.id !== id);
+    },
+    update_server_address(state, server_address) {
+      state.server_address = server_address
     },
     SOCKET_ONOPEN (state, event)  {
       Vue.prototype.$socket = event.currentTarget
@@ -43,15 +52,12 @@ export default new Vuex.Store({
           state.reviews = message.data;
           break;
         case "REVIEWS-MERGED":
-          console.log("reviews merged", message.data)
           state.merged = message.data;
           break;
         case "NOTIFICATION":
-          console.log("received notification", message.data)
           state.notifications.unshift(message.data);
           break;
         case "SYSTEM-NOTIFICATION":
-          console.log("received system notification", message.data)
           if (window.ipc !== undefined) {
             window.ipc.send('synchronous-message', message.data);
           }

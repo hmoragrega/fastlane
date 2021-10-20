@@ -42,7 +42,7 @@ type Pipeline struct {
 	ReviewID string  `json:"review_id"`
 	Running  bool    `json:"running"`
 	Success  bool    `json:"success"`
-	Status   string  `json:"status"`
+	Status   Status  `json:"status"`
 	WebURL   string  `json:"web_url"`
 	Stages   []Stage `json:"stages"`
 	Coverage float64 `json:"coverage"`
@@ -50,11 +50,25 @@ type Pipeline struct {
 
 type Stage struct {
 	Name   string `json:"name"`
+	Status Status `json:"status"`
 	Jobs   []Job  `json:"jobs"`
 }
 
 type Job struct {
 	Name   string `json:"name"`
-	Status string `json:"status"`
+	Status Status `json:"status"`
 	WebURL string `json:"web_url"`
 }
+
+type Status string
+
+const (
+	SuccessStatus  Status = "success"
+	FailedStatus   Status = "failed"
+	SkippedStatus  Status = "skipped"
+	RunningStatus  Status = "running"
+	PendingStatus  Status = "pending"
+	CanceledStatus Status = "canceled"
+	ManualStatus   Status = "manual"
+)
+

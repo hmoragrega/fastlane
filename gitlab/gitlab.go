@@ -129,6 +129,11 @@ func (g *Gitlab) GetMergePipeline(ctx context.Context, r fastlane.Review) (fastl
 		cov = c
 	}
 
+	stages, err := buildStages(j)
+	if err != nil {
+		return fastlane.Pipeline{}, err
+	}
+
 	return fastlane.Pipeline{
 		ID:       strconv.Itoa(p.ID),
 		Project:  strconv.Itoa(p.ProjectID),
@@ -136,7 +141,7 @@ func (g *Gitlab) GetMergePipeline(ctx context.Context, r fastlane.Review) (fastl
 		Success:  p.Status == "success",
 		WebURL:   p.WebURL,
 		Coverage: cov,
-		Stages:   buildStages(j),
+		Stages:   stages,
 	}, nil
 }
 
@@ -186,7 +191,7 @@ func buildReviewWithApprovals(mr *gitlab.MergeRequest, approvals []fastlane.User
 	}
 }
 
-func buildStages(jobs []*gitlab.Job) (stages []fastlane.Stage) {
+func buildStages(jobs []*gitlab.Job) (stages []fastlane.Stage, err error) {
 	cache := make(map[string]int)
 
 	// reverse jobs, older jobs first.
@@ -202,12 +207,41 @@ func buildStages(jobs []*gitlab.Job) (stages []fastlane.Stage) {
 			stages = append(stages, fastlane.Stage{Name: job.Stage})
 		}
 
+		status, err := status(stages[pos].Status, job.Status)
+		if err != nil {
+			return nil, err
+		}
+
 		stages[pos].Jobs = append(stages[pos].Jobs, fastlane.Job{
 			Name:   job.Name,
-			Status: job.Status,
+			Status: status,
 			WebURL: job.WebURL,
 		})
 	}
 
-	return stages
+	return stages, nil
+}
+
+var statusPriority = map[string]int{
+	"success":  0,
+	"pending":  1,
+	"manual":   2,
+	"skipped":  3,
+	"canceled": 4,
+	"running":  5,
+	"failed":   6,
+}
+
+func status(current fastlane.Status, new string) (fastlane.Status, error) {
+	a := statusPriority[string(current)]
+	b, ok := statusPriority[new]
+	if !ok {
+		return "", fmt.Errorf("unknown status %q", new)
+	}
+
+	if b > a {
+		return fastlane.Status(new), nil
+	}
+
+	return current, nil
 }
