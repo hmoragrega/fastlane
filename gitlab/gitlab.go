@@ -207,14 +207,15 @@ func buildStages(jobs []*gitlab.Job) (stages []fastlane.Stage, err error) {
 			stages = append(stages, fastlane.Stage{Name: job.Stage})
 		}
 
-		status, err := status(stages[pos].Status, job.Status)
+		newStatus, err := status(stages[pos].Status, job.Status)
 		if err != nil {
 			return nil, err
 		}
 
+		stages[pos].Status = newStatus
 		stages[pos].Jobs = append(stages[pos].Jobs, fastlane.Job{
 			Name:   job.Name,
-			Status: status,
+			Status: fastlane.Status(job.Status),
 			WebURL: job.WebURL,
 		})
 	}

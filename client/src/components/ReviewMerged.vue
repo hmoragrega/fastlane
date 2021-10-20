@@ -11,8 +11,8 @@
         <!--TOOD pop over menu?-->
         <v-tooltip bottom v-for="stage in pipeline.stages" v-bind:key="`merged-${pipeline.id}-${stage.name}`">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn icon color="green" v-bind:key="stage.name" v-bind="attrs" v-on="on">
-              <v-icon>mdi-check-circle-outline</v-icon>
+            <v-btn icon :color=stageColor(stage) v-bind:key="stage.name" v-bind="attrs" v-on="on">
+              <v-icon>{{stageIcon(stage)}}</v-icon>
             </v-btn>
           </template>
           <span>{{ stage.name }}</span>
@@ -36,5 +36,25 @@ const ReviewMergedProps = Vue.extend({
 })
 
 @Component
-export default class ReviewMerged extends ReviewMergedProps {}
+export default class ReviewMerged extends ReviewMergedProps {
+  stageColor(stage) {
+    switch (stage.status) {
+      case "success": return "green";
+      case "failed": return "red";
+      case "running": return "yellow";
+    }
+    return "grey"
+  }
+  stageIcon(stage) {
+    switch (stage.status) {
+      case "success": return "mdi-check-circle-outline";
+      case "failed": return "mdi-alert-circle-outline";
+      case "running": return "mdi-play-circle-outline";
+      case "skipped": return "mdi-skip-next-circle-outline";
+      case "pending": return "mdi-pause-circle-outline";
+      case "canceled": return "mdi-minus-circle-outline";
+      case "manual": return "mdi-account-circle-outline";
+    }
+  }
+}
 </script>
