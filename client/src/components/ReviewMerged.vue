@@ -8,15 +8,28 @@
     <v-card-actions>
       <v-container fluid class="pa-0">
         <v-btn class="ma-2" elevation="2" small outlined :href="review.web_url" target="blank">WEB</v-btn>
-        <!--TOOD pop over menu?-->
-        <v-tooltip bottom v-for="stage in pipeline.stages" v-bind:key="`merged-${pipeline.id}-${stage.name}`">
+        <v-menu v-for="stage in pipeline.stages" v-bind:key="`jobs-${pipeline.id}-${stage.name}`"
+            bottom
+            offset-y
+        >
           <template v-slot:activator="{ on, attrs }">
             <v-btn icon :color=stageColor(stage) v-bind:key="stage.name" v-bind="attrs" v-on="on">
               <v-icon>{{stageIcon(stage)}}</v-icon>
             </v-btn>
           </template>
-          <span>{{ stage.name }}</span>
-        </v-tooltip>
+
+          <v-list>
+            <v-list-item
+                v-for="(job, index) in stage.jobs"
+                :key="index"
+            >
+              <v-btn icon :color=stageColor(job)>
+                <v-icon>{{stageIcon(job)}}</v-icon>
+              </v-btn>
+              <v-list-item-title>{{ job.name }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-container>
     </v-card-actions>
 
